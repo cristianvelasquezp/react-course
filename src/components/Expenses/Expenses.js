@@ -1,36 +1,30 @@
-import ExpenseItem from "./ExpenseItem";
+import ExpensesList from "./ExpensesList";
 import './Expenses.css';
 import Card from "../UI/Card";
+import ExpensesFilter from "./ExpensesFilter";
+import {useState} from "react";
 
 function Expenses(promp) {
+    const [filteredYear, setFilteredYear] = useState('2020');
+
+    const filterChangeHandler = selectedYear => {
+        setFilteredYear(selectedYear);
+    }
+
+    const ExpenseFilter = promp.data.filter( expense => {
+        return expense.date.getFullYear().toString() ===  filteredYear
+    })
 
     return(
-        <Card className="expenses">
-            <ExpenseItem
-                id={promp.data[0].id}
-                title={promp.data[0].title}
-                amount={promp.data[0].amount}
-                date={promp.data[0].date}
-            />
-            <ExpenseItem
-                id={promp.data[1].id}
-                title={promp.data[1].title}
-                amount={promp.data[1].amount}
-                date={promp.data[1].date}
-            />
-            <ExpenseItem
-                id={promp.data[2].id}
-                title={promp.data[2].title}
-                amount={promp.data[2].amount}
-                date={promp.data[2].date}
-            />
-            <ExpenseItem
-                id={promp.data[3].id}
-                title={promp.data[3].title}
-                amount={promp.data[3].amount}
-                date={promp.data[3].date}
-            />
-        </Card>
+        <div>
+            <Card className="expenses">
+                <ExpensesFilter
+                    selected={filteredYear}
+                    onChangeFilterHandler={filterChangeHandler}
+                />
+                <ExpensesList items={ExpenseFilter} />
+            </Card>
+        </div>
     )
 
 }
